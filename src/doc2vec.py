@@ -15,8 +15,7 @@ from database import getDocuments
 # https://qiita.com/YIPG/items/476c814ea6d548e070e5
 
 dic = sys.argv[1]
-db_url = sys.argv[2]
-documents = getDocuments(db_url)
+documents = getDocuments()
 td = []
 
 # 1文書ずつ、単語に分割してリストに入れていく[([単語1,単語2,単語3],文書id),...]こんなイメージ
