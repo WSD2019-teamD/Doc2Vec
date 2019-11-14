@@ -1,6 +1,5 @@
 PY=/usr/local/bin/python3
 DIC=/usr/local/lib/mecab/dic/mecab-ipadic-neologd
-DB='localhost:27017'
 
 .PHONY: all
 all:
@@ -11,7 +10,7 @@ run:
 	$(PY) src/doc2vec.py $(DIC)
 
 data:
-	$(PY) src/database.py $(DB)
+	$(PY) src/database.py
 
 .PHONY: clean
 clean:

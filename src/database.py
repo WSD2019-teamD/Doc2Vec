@@ -3,12 +3,11 @@ import os
 
 if __name__ == "__main__":
     from pymongo import MongoClient
-    import sys
 
     if not os.path.exists('./data'):
         os.mkdir('./data')
 
-    url = sys.argv[1]
+    url = open('dbserver', 'r').read()
 
     # MongoDBに接続し, テキストデータを取得
     client = MongoClient(url)
