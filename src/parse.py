@@ -5,7 +5,7 @@ import logging
 引数の文字列に対して形態素解析を行う.
 名詞, 動詞, 形容詞, 形容動詞のみを抽出し, 単語のリストとして返す.
 '''
-def parseText(text, sysdic):
+def parseText(text, sysdic='/usr/local/lib/mecab/dic/mecab-ipadic-neologd'):
     text = text.split("\n") #改行で分割して配列にする
     while '' in text: #空行は削除
         text.remove('')

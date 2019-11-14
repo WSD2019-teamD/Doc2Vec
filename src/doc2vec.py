@@ -9,20 +9,20 @@ from sklearn.cluster import KMeans
 from collections import defaultdict
 
 from parse import parseText
-from database import getDocuments
+from database import getDataFrame
 
 
 # https://qiita.com/YIPG/items/476c814ea6d548e070e5
 
 dic = sys.argv[1]
-documents = getDocuments()
+df = getDataFrame()
 td = []
 
 # 1文書ずつ、単語に分割してリストに入れていく[([単語1,単語2,単語3],文書id),...]こんなイメージ
 # words：文書に含まれる単語のリスト（単語の重複あり）
 # tags：文書の識別子（リストで指定．1つの文書に複数のタグを付与できる）
-for i, doc in enumerate(documents):
-    wordlist = parseText(text=doc, sysdic=dic)
+for i in range(len(df)):
+    wordlist = parseText(text=str(df['content'][i]), sysdic=dic)
     td.append(TaggedDocument(words=wordlist, tags=[i]))
 
 #モデル作成

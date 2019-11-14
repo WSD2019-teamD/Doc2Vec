@@ -17,8 +17,7 @@ if __name__ == "__main__":
     pd.DataFrame.to_csv(df, './data/hateb.csv')
 
 
-# 保存したcsvファイルから文章データを取り出す
-def getDocuments():
+# 保存したcsvファイルからDataFrameを構成
+def getDataFrame():
     df = pd.read_csv('./data/hateb.csv')
-    df['content'] = df['content'].apply(lambda x : str(x))
-    return list(df['content'])
+    return df
