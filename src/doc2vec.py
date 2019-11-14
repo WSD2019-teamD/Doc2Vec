@@ -1,6 +1,7 @@
 #coding: UTF-8
 
 import sys
+import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from gensim.models.doc2vec import Doc2Vec
@@ -51,29 +52,22 @@ for cluster_id, doc_num in zip(labels, doc_nums):
     cluster_to_docs[cluster_id].append(doc_num)
 
 #クラスター出力
-
 for docs in cluster_to_docs.values():
     print(docs)
 
-#どんなクラスタリングになったか、棒グラフ出力しますよ
-import matplotlib.pyplot as plt
 
-#x軸ラベル
-x_label_name = []
-for i in range(n_clusters):
-    x_label_name.append("Cluster"+str(i))
+# DataFrameにcluster_idのカラムを追加
+df['cluster_id'] = labels
 
-#x=left ,y=heightデータ. ここではx=クラスター名、y=クラスター内の文書数
-left = range(n_clusters)
-height = []
-for docs in cluster_to_docs.values():
-    height.append(len(docs))
-print(height,left,x_label_name)
+categories = df['category'].unique()
+df2 = pd.DataFrame()
+# 各クラスターの文書数をカテゴリーごとに数える
+for category in categories:
+    df2[category] = [((df['category'] == category) & (df['cluster_id'] == i)).sum() for i in range(8)]
 
-#棒グラフ設定
-plt.bar(left,height,color="#FF5B70",tick_label=x_label_name,align="center")
+# グラフ出力
+df2.plot.bar(stacked=True)
 plt.title("Document clusters")
-plt.xlabel("cluster name")
-plt.ylabel("number of documents")
-plt.grid(True)
+plt.xlabel('cluster ID')
+plt.ylabel('number of documents')
 plt.show()
