@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 
-if __name__ == "__main__":
+def fetchData():
     from pymongo import MongoClient
 
     if not os.path.exists('./data'):
@@ -15,9 +15,3 @@ if __name__ == "__main__":
 
     df = pd.DataFrame.from_dict(list(collection.find())).astype(object)
     pd.DataFrame.to_csv(df, './data/hateb.csv')
-
-
-# 保存したcsvファイルからDataFrameを構成
-def getDataFrame():
-    df = pd.read_csv('./data/hateb.csv')
-    return df
