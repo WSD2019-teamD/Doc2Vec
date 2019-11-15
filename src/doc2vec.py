@@ -9,7 +9,8 @@ from sklearn.cluster import KMeans
 from collections import defaultdict
 
 from parse import parseText
-
+from normalization import normalize
+from stopwords import remove_stopwords
 
 # https://qiita.com/YIPG/items/476c814ea6d548e070e5
 
@@ -18,12 +19,19 @@ def clustering(dic):
     df = pd.read_csv('./data/hateb.csv')
     td = []
 
+    with open("./data/stop.txt", "r") as f:
+        stop_list = [v.rstrip() for v in f.readlines() if v != '\n']
+
     # 1文書ずつ、単語に分割してリストに入れていく[([単語1,単語2,単語3],文書id),...]こんなイメージ
     # words：文書に含まれる単語のリスト（単語の重複あり）
     # tags：文書の識別子（リストで指定．1つの文書に複数のタグを付与できる）
     for i in range(len(df)):
         wordlist = parseText(text=str(df['content'][i]), sysdic=dic)
-        td.append(TaggedDocument(words=wordlist, tags=[i]))
+        # 単語の文字種の統一、つづりや表記揺れの吸収
+        normalizedlist = [normalize(word) for word in wordlist]
+        # ストップワードの除去
+        stopremovedlist = remove_stopwords(normalizedlist, stop_list)
+        td.append(TaggedDocument(words=stopremovedlist, tags=[i]))
 
     #モデル作成
     model = Doc2Vec(documents=td, dm = 1, vector_size=300, window=8, min_count=10, workers=4)

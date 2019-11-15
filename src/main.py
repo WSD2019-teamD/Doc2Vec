@@ -5,10 +5,14 @@ import matplotlib.pyplot as plt
 
 from database import fetchData
 from doc2vec import clustering
+from stopwords import maybe_download
 
 
 if not os.path.exists('./data/hateb.csv'):
     fetchData()
+
+if not os.path.exists("./data/stop.txt"):
+    maybe_download("./data/stop.txt")
 
 if not os.path.exists('./data/hateb_cluster.csv'):
     clustering(sys.argv[1])
